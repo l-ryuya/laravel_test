@@ -19,7 +19,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Staff/Auth/Login', [
+        // Log::debug($this->getRenderFilePath());
+        return Inertia::render($this->getRenderFilePath(), [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
         ]);
@@ -30,12 +31,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        Log::debug($request);
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('staff.dashboard', absolute: false));
+        return redirect()->intended(route($this->getRedirectDashboard(), absolute: false));
     }
 
     /**
@@ -43,12 +43,25 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('staff')->logout();
-
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect(route($this->getRedirectLogin()));
+    }
+
+    private function getRedirectDashboard()
+    {
+        return request()->is('staff/*') ? 'staff.dashboard' : 'enduser.dashboard';
+    }
+
+    private function getRedirectLogin()
+    {
+        return request()->is('staff/*') ? 'staff.login' : 'enduser.login';
+    }
+
+    private function getRenderFilePath()
+    {
+        return request()->is('staff/*') ? 'Staff/Auth/Login' : 'Enduser/Auth/Login';
     }
 }

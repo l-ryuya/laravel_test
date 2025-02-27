@@ -16,8 +16,8 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 
 
-Route::prefix('staff')->name('staff.')->group(function () {
-    Route::middleware('guest:staff')->group(function () {
+Route::prefix('enduser')->name('enduser.')->group(function () {
+    Route::middleware('guest:endusers')->group(function () {
         Route::get('register', [RegisteredUserController::class, 'create'])
             ->name('register');
 
@@ -41,7 +41,12 @@ Route::prefix('staff')->name('staff.')->group(function () {
             ->name('password.store');
     });
 
-    Route::middleware('auth:staff')->group(function () {
+    Route::middleware('auth:endusers')->group(function () {
+
+        Route::middleware(['auth:endusers'])->group(function () {
+            return Inertia::render('Enduser/Dashboard');
+        })->name('dashboard');
+
         Route::get('verify-email', EmailVerificationPromptController::class)
             ->name('verification.notice');
 

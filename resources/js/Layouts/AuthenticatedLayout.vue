@@ -6,6 +6,9 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3';
+
+const checkUser = usePage().url.includes('staff') ? 'staff' : 'enduser';
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -22,7 +25,7 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex shrink-0 items-center">
-                                <Link :href="route('staff.dashboard')">
+                                <Link :href="route(checkUser + '.dashboard')">
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800"
                                     />
@@ -34,8 +37,8 @@ const showingNavigationDropdown = ref(false);
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('staff.dashboard')"
-                                    :active="route().current('staff.dashboard')"
+                                    :href="route(checkUser + '.dashboard')"
+                                    :active="route().current(checkUser + '.dashboard')"
                                 >
                                     Dashboard
                                 </NavLink>
@@ -72,12 +75,12 @@ const showingNavigationDropdown = ref(false);
 
                                     <template #content>
                                         <DropdownLink
-                                            :href="route('staff.profile.edit')"
+                                            :href="route(checkUser + '.profile.edit')"
                                         >
                                             Profile
                                         </DropdownLink>
                                         <DropdownLink
-                                            :href="route('staff.logout')"
+                                            :href="route(checkUser + '.logout')"
                                             method="post"
                                             as="button"
                                         >
@@ -141,8 +144,8 @@ const showingNavigationDropdown = ref(false);
                 >
                     <div class="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
-                            :href="route('staff.dashboard')"
-                            :active="route().current('staff.dashboard')"
+                            :href="route(checkUser + '.dashboard')"
+                            :active="route().current(checkUser + '.dashboard')"
                         >
                             Dashboard
                         </ResponsiveNavLink>
@@ -164,11 +167,11 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('staff.profile.edit')">
+                            <ResponsiveNavLink :href="route(checkUser + '.profile.edit')">
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
-                                :href="route('staff.logout')"
+                                :href="route(checkUser + '.logout')"
                                 method="post"
                                 as="button"
                             >

@@ -17,13 +17,13 @@ defineProps({
 });
 
 const form = useForm({
-    unique_id: '',
+    email: '',
     password: '',
     remember: false,
 });
 
 const submit = () => {
-    form.post(route('staff.login'), {
+    form.post(route('enduser.login'), {
         onFinish: () => form.reset('password'),
     });
 };
@@ -39,18 +39,18 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="unique_id" value="個人ID" />
+                <InputLabel for="email" value="Email" />
 
                 <TextInput
-                    id="unique_id"
-                    type="text"
+                    id="email"
+                    type="email"
                     class="mt-1 block w-full"
-                    v-model="form.unique_id"
+                    v-model="form.email"
                     required
                     autocomplete="username"
                 />
 
-                <InputError class="mt-2" :message="form.errors.unique_id" />
+                <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-4">
@@ -68,14 +68,14 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <!-- <div class="mt-4 block">
+            <div class="mt-4 block">
                 <label class="flex items-center">
                     <Checkbox name="remember" v-model:checked="form.remember" />
                     <span class="ms-2 text-sm text-gray-600"
                         >Remember me</span
                     >
                 </label>
-            </div> -->
+            </div>
 
             <div class="mt-4 flex items-center justify-end">
                 <!-- <Link
